@@ -1,0 +1,16 @@
+services:
+  training:
+    build: ./training
+    volumes:
+      - ./data:/app/data:ro
+      - ./models:/app/models
+
+  inference:
+    build: ./inference
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./models:/app/models:ro
+    depends_on:
+      training:
+        condition: service_completed_successfully
